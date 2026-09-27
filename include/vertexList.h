@@ -5,7 +5,9 @@
 typedef struct vertexL *vertexList;
 
 vertexList new_VertexList();
-int is_insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w);
+void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w);
 void free_VertexList(vertexList vl);
+int n_vertex(vertexList vl);
+
 
 #endif

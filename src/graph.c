@@ -40,13 +40,13 @@ GRAPH loadGRAPH(char *fileName){
     {
         G->n_edge++;
         sscanf(buffer, "%d,%d,%f", &src, &dest, &weight);
-        if(is_insert_VertexList(G->list, src, dest, weight)){
-            G->n_Ver++;
-        }
-        if(is_insert_VertexList(G->list, dest, src, weight)){
-            G->n_Ver++;
-        }
+        insert_VertexList(G->list, src, dest, weight);
     }
+    G->n_Ver = n_vertex(G->list);
     return G;
     fclose(fp);
+}
+
+void insert_Edge(GRAPH G, Edge E){
+    
 }

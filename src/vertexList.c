@@ -34,7 +34,7 @@ vertexList new_VertexList(){
 /**
  * inserimento di un arco in una lista
  */
-int is_insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w){
+void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w){
     v_node *x;
     int trovato =0;
 
@@ -76,4 +76,16 @@ void free_VertexList(vertexList vl){
     }
     free(vl->head);
     free(vl);
+}
+/**
+ * conta il numero di vertici
+ */
+int n_vertex(vertexList vl){
+    int cnt=0;
+    v_node *x;
+
+    for(x=vl->head; x!=NULL; x=x->next){
+        cnt++;
+    }
+    return cnt;
 }
