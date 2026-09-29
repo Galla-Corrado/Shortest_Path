@@ -8,6 +8,9 @@ typedef struct graph *GRAPH;
 
 GRAPH graphInit();
 GRAPH loadGRAPH(char *fileName);
+void insert_Edge(GRAPH G, Edge E);
+void remove_Edge(GRAPH G, Edge E);
+
 
 
 

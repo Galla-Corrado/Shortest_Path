@@ -30,22 +30,25 @@ adj_list new_adjList(){
     return adjL;
 }
 
-void insert_adj_vertex(adj_list list, Vertex v, float weight){
+void insert_adj_vertex(adj_list list, Vertex v, float weight, int *succes){
     adj_node *x;
     int trovato=0;
 
     if(list->head == NULL){
         list->head = new_adj_node(v, weight);
+        *succes = 1;
     }
     else{
         for(x=list->head; x->next!=NULL && !trovato; x=x->next){
             if(x->v==v){
                 x->weight = weight;
+                *succes = 0;
                 trovato = 1;
             }
         }
         if(trovato == 0){
             x->next = new_adj_node(v, weight);
+            *succes = 1;
         }
     }
 }
@@ -70,4 +73,28 @@ void free_adjList(adj_list list){
     free(list);
 }
 
+void remove_adj_vertex(adj_list list, Vertex v, int *succes){
+    adj_node *prev, *x;
+    int trovato = 0;
+
+    prev = list->head;
+    x = prev->next;
+    if(prev->v == v){
+        list->head = remove_head(list);
+        *succes = 1;
+        trovato =1;
+    }
+    while(!trovato && x!=NULL){
+        if(x->v == v){
+            trovato = 1;
+            prev->next = x->next;
+            *succes = 1;
+            free(x);
+            return;
+        }
+        prev = x;
+        x = x->next;
+    }
+    *succes = 0;
+}
 

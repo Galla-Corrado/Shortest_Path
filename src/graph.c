@@ -24,11 +24,10 @@ GRAPH graphInit(){
     return G;
 }
 
-GRAPH loadGRAPH(char *fileName){
+GRAPH loadGRAPH(char *fileName){ 
     FILE *fp;
     GRAPH G = graphInit();
-    Vertex src, dest;
-    float weight;
+    Edge E;
     char buffer[MAXC];
 
     fp = fopen(fileName, "r");
@@ -39,8 +38,8 @@ GRAPH loadGRAPH(char *fileName){
     while (fgets(buffer, MAXC, fp) != NULL)
     {
         G->n_edge++;
-        sscanf(buffer, "%d,%d,%f", &src, &dest, &weight);
-        insert_VertexList(G->list, src, dest, weight);
+        sscanf(buffer, "%d,%d,%f", &(E.src), &(E.dest), &(E.weight));
+        insert_Edge(G, E);
     }
     G->n_Ver = n_vertex(G->list);
     return G;
@@ -49,4 +48,11 @@ GRAPH loadGRAPH(char *fileName){
 
 void insert_Edge(GRAPH G, Edge E){
     
+    insert_VertexList(G->list, E.src, E.dest, E.weight, &(G->n_edge));
+    insert_VertexList(G->list, E.dest, E.src, E.weight, &(G->n_edge));
+}
+
+void remove_Edge(GRAPH G, Edge E){
+    remove_VertexList(G->list, E.src, E.dest, &(G->n_edge));
+    remove_VertexList(G->list, E.dest, E.src, &(G->n_edge));
 }

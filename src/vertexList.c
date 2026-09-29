@@ -34,29 +34,33 @@ vertexList new_VertexList(){
 /**
  * inserimento di un arco in una lista
  */
-void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w){
+void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w, int *n_E){
     v_node *x;
-    int trovato =0;
+    int trovato =0, succes = 0;
 
     if(vl->head == NULL){
         vl->head = new_vnode();
-        insert_adj_vertex(vl->head->adj_v, src, 0);
-        insert_adj_vertex(vl->head->adj_v, dest, w);
+        insert_adj_vertex(vl->head->adj_v, src, 0, &succes);
+        insert_adj_vertex(vl->head->adj_v, dest, w, &succes);
+        (*n_E)++;
     }
     else{
         for(x=vl->head; x->next!=NULL && !trovato; x = x->next){
             if(adj_Head_Vertex_value(x->adj_v) == src){
                 trovato = 1;
-                insert_adj_vertex(x->adj_v, dest, w);
+                insert_adj_vertex(x->adj_v, dest, w, &succes);
+                if(succes){
+                    (*n_E)++;
+                }
             }
         }
         if(trovato == 0){
             x->next = new_vnode();
-            insert_adj_vertex(x->next->adj_v, src, 0);
-            insert_adj_vertex(x->next->adj_v, dest, w);
+            insert_adj_vertex(x->next->adj_v, src, 0, &succes);
+            insert_adj_vertex(x->next->adj_v, dest, w, &succes);
+            (*n_E)++;
         }
     }
-    return !trovato;
 }
 /**
  * cancellazione della lista dei vertici
@@ -88,4 +92,25 @@ int n_vertex(vertexList vl){
         cnt++;
     }
     return cnt;
+}
+
+void remove_VertexList(vertexList vl, Vertex src, Vertex dest, int *n_E){
+    v_node *x;
+    int trovato = 0, succes =0;
+
+    x=vl->head;
+    while(!trovato && x!=NULL){
+        if(adj_Head_Vertex_value(x->adj_v) == src){
+            trovato = 1;
+            remove_adj_vertex(x->adj_v, dest, &succes);
+            if(succes){
+                (*n_E)--;
+            }
+        }
+        else{
+             x=x->next;
+        }
+    }
+
+    
 }
