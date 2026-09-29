@@ -47,12 +47,18 @@ GRAPH loadGRAPH(char *fileName){
 }
 
 void insert_Edge(GRAPH G, Edge E){
-    
-    insert_VertexList(G->list, E.src, E.dest, E.weight, &(G->n_edge));
-    insert_VertexList(G->list, E.dest, E.src, E.weight, &(G->n_edge));
+    insert_VertexList(G->list, E.src, E.dest, E.weight, &(G->n_edge)); 
 }
 
 void remove_Edge(GRAPH G, Edge E){
     remove_VertexList(G->list, E.src, E.dest, &(G->n_edge));
     remove_VertexList(G->list, E.dest, E.src, &(G->n_edge));
+}
+
+int vertex_number(GRAPH G){
+    return G->n_Ver;
+}
+
+int Edge_number(GRAPH G){
+    return G->n_edge;
 }

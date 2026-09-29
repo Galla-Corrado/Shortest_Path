@@ -110,7 +110,5 @@ void remove_VertexList(vertexList vl, Vertex src, Vertex dest, int *n_E){
         else{
              x=x->next;
         }
-    }
-
-    
+    }  
 }

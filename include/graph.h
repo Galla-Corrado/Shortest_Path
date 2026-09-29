@@ -10,7 +10,8 @@ GRAPH graphInit();
 GRAPH loadGRAPH(char *fileName);
 void insert_Edge(GRAPH G, Edge E);
 void remove_Edge(GRAPH G, Edge E);
-
+int vertex_number(GRAPH G);
+int Edge_number(GRAPH G);
 
 
 
