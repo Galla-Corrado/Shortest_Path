@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "adjList.h"
+#include <stdio.h>
 
 /**
  * definizione del nodo di una lista di adiacenze
@@ -59,17 +60,22 @@ Vertex adj_Head_Vertex_value(adj_list list){
 
 static adj_node *remove_head(adj_list l){
     adj_node *x;
-    x = l->head->next;
-    free(l->head);
-    return x;
+    
+    x = l->head;
+    
+    l->head = x->next;
+    free(x);
+    
+    return l->head;
 }
 void free_adjList(adj_list list){
     adj_node *x;
 
-    for(x=list->head; x->next!=NULL; x=x->next){
-        list->head = remove_head(list);
+    x= list->head;
+    while(x->next != NULL){
+        x = remove_head(list);
     }
-    free(list->head);
+    free(x);
     free(list);
 }
 
@@ -97,4 +103,40 @@ void remove_adj_vertex(adj_list list, Vertex v, int *succes){
     }
     *succes = 0;
 }
+
+static int List_size(adj_list adjl){
+    adj_node *x;
+    int size=0;
+
+    for(x=adjl->head->next; x!=NULL; x = x->next){
+        size++;
+    }
+    return size;
+}
+
+Edge *getEdges(adj_list adjl, int *dim){
+    Edge *e;
+    int i;
+    adj_node *x = adjl->head->next;
+
+    *dim = List_size(adjl);
+    e = malloc(*dim*sizeof(Edge));
+    for(i=0; i<*dim; i++){
+        e[i].src = adj_Head_Vertex_value(adjl);
+        e[i].dest = x->v;
+        e[i].weight = x->weight;
+        x = x->next;
+    }
+    return e;
+}
+
+void print_adjL(adj_list adjl){
+    adj_node *x;
+
+    for(x=adjl->head->next; x!=NULL; x = x->next){
+        printf("(v:%d|w:%.2f)-", x->v, x->weight);
+    }
+    printf("\n");
+}
+
 

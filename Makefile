@@ -1,11 +1,14 @@
 CFLAGS = -Wall -g -Iinclude
 all: programma
 
-programma: main.o graph.o vertexList.o adjlist.o
-	gcc ${CFLAGS} main.o graph.o vertexList.o adjlist.o -o programma
+programma: main.o graph.o vertexList.o adjlist.o binary_heap.o
+	gcc ${CFLAGS} main.o graph.o vertexList.o adjlist.o binary_heap.o -o programma
 
 main.o: src/main.c include/graph.h include/vertex_edge.h
 	gcc ${CFLAGS} -c src/main.c -o main.o
+
+binary_heap.o: src/binary_heap.c include/binary_heap.h
+	gcc ${CFLAGS} -c src/binary_heap.c -o binary_heap.o
 
 graph.o: src/graph.c include/graph.h
 	gcc ${CFLAGS} -c src/graph.c -o graph.o

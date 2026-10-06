@@ -1,7 +1,6 @@
 #include "vertexList.h"
-#include "adjList.h"
-#include "vertex_edge.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * definizione e creazione del nodo della lista dei vertici.
@@ -35,8 +34,8 @@ vertexList new_VertexList(){
  * inserimento di un arco in una lista
  */
 void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w, int *n_E){
-    v_node *x;
-    int trovato =0, succes = 0;
+    v_node *x, *prev;
+    int succes = 0;
 
     if(vl->head == NULL){
         vl->head = new_vnode();
@@ -45,19 +44,17 @@ void insert_VertexList(vertexList vl, Vertex src, Vertex dest, float w, int *n_E
         (*n_E)++;
     }
     else{
-        for(x=vl->head; x->next!=NULL && !trovato; x = x->next){
-            if(adj_Head_Vertex_value(x->adj_v) == src){
-                trovato = 1;
-                insert_adj_vertex(x->adj_v, dest, w, &succes);
-                if(succes){
-                    (*n_E)++;
-                }
+        for(x=vl->head->next, prev= vl->head; x!=NULL && adj_Head_Vertex_value(prev->adj_v)!= src; x = x->next, prev = prev->next);
+        if(adj_Head_Vertex_value(prev->adj_v)==src){
+            insert_adj_vertex(prev->adj_v, dest, w, &succes);
+            if(succes){
+                (*n_E)++;
             }
         }
-        if(trovato == 0){
-            x->next = new_vnode();
-            insert_adj_vertex(x->next->adj_v, src, 0, &succes);
-            insert_adj_vertex(x->next->adj_v, dest, w, &succes);
+        else if(x == NULL && adj_Head_Vertex_value(prev->adj_v)!=src){
+            prev->next = new_vnode();
+            insert_adj_vertex(prev->next->adj_v, src, 0, &succes);
+            insert_adj_vertex(prev->next->adj_v, dest, w, &succes);
             (*n_E)++;
         }
     }
@@ -111,4 +108,28 @@ void remove_VertexList(vertexList vl, Vertex src, Vertex dest, int *n_E){
              x=x->next;
         }
     }  
+}
+
+Edge *get_Edges_Vl(Vertex v, vertexList vl, int *dim){
+     v_node *x;
+     Edge *e;
+
+    for(x=vl->head; x!=NULL && adj_Head_Vertex_value(x->adj_v)!=v; x = x->next);
+    if(x == NULL){
+        return NULL;
+    }
+    else{
+        e = getEdges(x->adj_v, dim);
+    }
+    return e;
+}
+
+void print_VertexList(vertexList vl){
+    v_node *x;
+
+    for(x=vl->head; x!=NULL; x = x->next){
+        printf("vertex:%d\n", adj_Head_Vertex_value(x->adj_v));
+        print_adjL(x->adj_v);
+        printf("\n");
+    }
 }

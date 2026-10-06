@@ -1,0 +1,65 @@
+</>
+@startuml UML
+
+class adjList{
+    +new_adjList(): adj_list
+    +insert_adj_vertex(v: Vertex, weight: float, succes: int*): void
+    +remove_adj_vertex(): void
+    +adj_Head_Vertex_value(): vertex
+    +free_adjList(): void
+    +getEdges(): Edge*
+    +print_adjL(): void
+}
+
+class vertexList{
+    +new_VertexList() : vertexList
+    +insert_VertexList(vl: vertexList, src: Vertex, dest: Vertex , w: float, n_E: int*): void
+    +remove_VertexList(vl: vertexList, src: Vertex, dest: Vertex, n_E: int*) : void
+    +free_VertexList(vl: vertexList): void
+    +n_vertex(vl: vertexList): int
+    +get_Edges_Vl(v: Vertex, vl: vertexList, dim: int*): Edge*
+    +print_VertexList(vl: vertexList): void
+}
+
+class binary_heap{
+    +BINARY_HEAP binHeap_init(capacity: int): BINARY_HEAP
+    +binHeap_insert(H: BINARY_HEAP, v: Vertex, w: float): void
+    +is_present(H: BINARY_HEAP, v: Vertex): int
+    +getHeap_size(H: BINARY_HEAP): int
+    +getVertex_heap(H: BINARY_HEAP, i: int): Vertex
+    +printPath(H: BINARY_HEAP, dest: Vertex): void
+    +printHeap(H: BINARY_HEAP): void
+}
+
+class graph{
+    +graphInit(): GRAPH
+    +loadGRAPH(fileName: char*): GRAPH
+    +insert_Edge(G: GRAPH, E: Edge): void
+    +remove_Edge(G: GRAPH, E: Edge): void
+    +vertex_number(G: GRAPH): int
+    +Edge_number(G: GRAPH): int
+    +free_graph(G: GRAPH): void
+    +shortPath(G: GRAPH, src: Vertex, dest: Vertex): void
+}
+
+class vertex{
+    - vertex: int
+}
+
+class edge{
+    - src: vertex
+    - dest: vertex
+    - weight: float
+}
+
+edge "1"->"2" vertex
+adjList "1"-down-> "0..*" edge
+binary_heap "1"->"0..*" edge
+vertexList "1"->"0..*" adjList
+graph "1"-left->"1" binary_heap
+graph "1"-right-> "0..*" vertexList
+
+
+
+
+@enduml
